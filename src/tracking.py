@@ -37,6 +37,8 @@ class MyTracker:
         self.sourcePath = cv2.VideoCapture(src)
         ok, self.frame = self.sourcePath.read()
 
+        self.firstFrame = self.frame
+
         # select bounding box
 
         print("MyTracker: Please select the bounding box")
@@ -70,14 +72,14 @@ class MyTracker:
         self.timer = cv2.getTickCount()
         ok, self.frame = self.getFrame()
         if not ok:
-            return -1
+            return (-1, (self.bbox[0] + self.bbox[2]/2, self.bbox[1] + self.bbox[3]/2))
 
         ok, self.bbox = self.tracker.update(self.frame)
         self.fps = cv2.getTickFrequency() / (cv2.getTickCount() - self.timer)
 
         if ok:
             cv2.rectangle(self.frame, (self.bbox[0], self.bbox[1]), 
-                        (self.bbox[0]+self.bbox[2], self.bbox[1]+self.bbox[3]), (255,0,0), 2, 1)
+                        (self.bbox[0]+self.bbox[2], self.bbox[1]+self.bbox[3]), (111, 255, 0), 2, 1)
         else:
             # Tracking failure
             cv2.putText(self.frame, "Tracking failure detected", (100,80), cv2.FONT_HERSHEY_SIMPLEX, 0.75,(0,0,255),2)
