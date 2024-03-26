@@ -2,6 +2,7 @@ from tracking import MyTracker
 import cv2
 import numpy as np
 import time
+from datetime import datetime
 
 YELLOW = (255, 0, 255)
 BLUE   = (255,0,0)
@@ -28,6 +29,14 @@ while True:
 
 
 cv2.destroyAllWindows()
+
+# save the position in text file
+now = datetime.now()
+current_time = now.strftime("%H:%M:%S")
+current_time.replace(":", "-")
+with open(f"track_{current_time}.txt", "w") as f:
+    for i in range(len(historyPosition)):
+        f.write("%d %d\n" % (historyPosition[i][0], historyPosition[i][1]))
 
 print("showing the path")
 firstImg = tracker.firstFrame
